@@ -18,3 +18,7 @@ Os padrões mais universais e de alto nível são os padrões arquitetônicos; d
 *Os padrões estruturais* explicam como montar objetos e classes em estruturas maiores, enquanto ainda mantém as estruturas flexíveis e eficientes.
 
 *Os padrões comportamentais* cuidam da comunicação eficiente e da assinalação de responsabilidades entre objetos.
+
+ **Aviso**:
+ As definições de *intent / problem / solution* foram adaptadas (resumidas) do site (Refactoring Guru)(https://refactoring.guru/pt-br/design-patterns), que é nossa fonte de estudo. O codigo foi gerado
+ com auxílio do Ollama, ultilizando o Claude Code como agente local (ver [`LLMS.md`](./LLMS.md)).
