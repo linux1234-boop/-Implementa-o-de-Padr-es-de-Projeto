@@ -16,7 +16,7 @@ Se você continuar instanciando os canais diretamente, seu código de negócio c
                    
                   [ Código do E-commerce ]
                              |
-         📊 (Se for Email? Se for SMS? Se for Push?)
+           (Se for Email? Se for SMS? Se for Push?)
          /                   |                    \
 [ NotificacaoEmail ]   [ NotificacaoSMS ]   [ NotificacaoPush ]
 
@@ -28,12 +28,16 @@ Fragilidade: Se a assinatura do construtor da NotificacaoPush mudar amanhã para
 O padrão Factory Method resolve isso dizendo: "Pare de instanciar canais de comunicação no meio da sua regra de negócio. Delegue essa criação para quem entende disso."
 Em vez de acoplar o sistema às classes concretas, você cria uma interface criadora abstrata (NotificacaoFactory) que define o método abstrato criar_notificacao().
 Cada canal ganha a sua própria fábrica especializada:
+
                 [ NotificacaoFactory ]
          { + criar_notificacao(): Notificacao }
                    { + notificar() }
                /          |          \
               /           |           \
       [EmailFactory] [SMSFactory] [PushFactory]
+
+
+
 
 #Saida esperada#
 === Sistema de Notificacoes ===
