@@ -59,6 +59,7 @@ Dessa forma, o seu código fica completamente protegido. Quer adicionar um novo 
 Basta criar uma única classe nova herdando de DecoradorBebida. As bebidas base nem sabem que os adicionais existem.
 
 
+
 #Saida Esperada#
 === Cafeteria ===
 Escolha o drink base:
@@ -76,23 +77,23 @@ Agora escolha os adicionais:
 3 - Chantilly           (+ R$ 2.50)
 4 - Caramelo            (+ R$ 1.50)
 5 - Canela              (+ R$ 0.00)
-6 - Sem Acucar          (- R$ 0.50)
+6 - Sem Acucar          ( R$ 0.00)
 0 - Finalizar pedido
 
 Pedido atual: Cafe
 Total parcial: R$ 5.00
 Adicional: 6
-Adicionado: Sem Acucar (-R$0.50)
+Adicionado: Sem Acucar (R$0.00)
 
 Pedido atual: Cafe (Sem Acucar)
-Total parcial: R$ 4.50
+Total parcial: R$ 5.00
 Adicional: 2
 Adicionado: Chocolate
 
 Pedido atual: Cafe (Sem Acucar) + Chocolate
-Total parcial: R$ 7.50
+Total parcial: R$ 8.00
 Adicional: 0
 
 === Pedido Final ===
 Descricao: Cafe (Sem Acucar) + Chocolate
-Total:     R$ 7.50
+Total:     R$ 8.00
