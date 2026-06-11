@@ -1,0 +1,120 @@
+#Observer#
+O Observer é um padrão de projeto comportamental
+que permite que você defina um mecanismo de assinatura para notificar múltiplos objetos sobre quaisquer eventos que aconteçam com o objeto que eles estão observando.
+
+#Problema#
+Imagine que você está desenvolvendo o software de controle para uma estação meteorológica física (EstacaoMeteorologica). Ela possui sensores que leem constantemente a temperatura, a umidade e a velocidade do vento.
+No início, o único requisito era exibir esses dados em um painel eletrônico fixo no laboratório (DisplayTelao). Você, de forma direta, colocou uma referência do painel dentro da estação:
+
+# Como o código seria sem o padrão:
+class EstacaoMeteorologica:
+    def __init__(self):
+        self.telao = DisplayTelao() # Acoplamento direto!
+
+    def set_dados(self, t, u, v):
+        # ... atualiza os dados ...
+        self.telao.atualizar(t, u, v)
+
+Tudo funcionava bem, até que o sistema começou a crescer. O cliente agora quer:
+
+1-Enviar os dados para um aplicativo móvel (DisplayApp).
+
+2-Criar um sistema de alertas que avisa a Defesa Civil caso o vento passe de 60 km/h (AlertaVento).
+
+3-Criar outro alerta para ondas de calor extremo (AlertaTempestade).
+
+Se você continuasse usando a abordagem tradicional, teria que abrir a classe EstacaoMeteorologica a cada novo pedido e entupir os métodos de novos objetos e verificações.
+
+                    [ Estação Meteorológica ]
+                               |
+       (Precisa conhecer e atualizar TODO MUNDO diretamente)
+         /             /               \               \
+  [ DisplayTelao ]  [ DisplayApp ]  [ AlertaVento ]  [ AlertaCalor ]
+
+*Por que isso é ruim?*
+
+1-Acoplamento Extremo: A estação meteorológica (que deveria apenas ler dados físicos dos sensores) agora precisa saber como a tela de um aplicativo renderiza informações ou como um alerta decide se o clima está perigoso.
+
+2-Violação do OCP (Princípio Aberto/Fechado): Toda vez que um novo tipo de painel ou alerta for inventado, você terá que modificar e testar novamente a classe da estação, correndo o risco de quebrar o que já funcionava.
+
+#Solução#
+O padrão Observer resolve isso introduzindo o conceito de Inversão de Dependência através de um sistema de assinatura (Publish-Subscribe).
+A classe que possui os dados importantes passa a ser chamada de Subject (Sujeito/Publicador). Ela não precisa mais saber quais ou quantos objetos querem os seus dados;
+ela apenas mantém uma lista genérica de interessados que seguem o contrato da interface Observer (Observador/Assinante).
+No código, a mágica acontece em três passos simples:
+
+*A Assinatura (anexar / desanexar): O Telao, o App e os Alertas se registram na estação quando o usuário escolhe as opções do menu no terminal. A estação apenas os adiciona à lista self.observers.
+
+*O Evento: Quando um sensor atualiza um valor (ex: set_vento(65)), a estação altera seu estado interno e grita para a lista: self.notificar(vento=vento).
+
+*A Reação Discreta: O método notificar percorre a lista de assinantes e chama o método atualizar(dados) de cada um deles.
+
+[ Estação ] ───(notificar)───> [ Lista de Observers Genéricos ]
+                                       │
+                ┌──────────────────────┼──────────────────────┐
+                ▼                      ▼                      ▼
+         [ DisplayTelao ]       [ AlertaVento ]        [ DisplayApp ]
+
+O ponto alto da implementação foi o uso dos argumentos nomeados (dados) do Python.
+Graças a isso, a estação pode disparar uma notificação parcial contendo apenas a temperatura, e os observadores que não se importam com a temperatura simplesmente a ignoram, sem que o código quebre ou exija dados que o sensor ainda não leu.
+
+#Saida Esperada#
+=== Estacao Meteorologica ===
+1 - Ativar Telao
+2 - Desativar Telao
+3 - Ativar App
+4 - Desativar App
+5 - Ativar Alerta de Calor
+6 - Desativar Alerta de Calor
+7 - Ativar Alerta de Umidade
+8 - Desativar Alerta de Umidade
+9 - Ativar Alerta de Vento
+10 - Desativar Alerta de Vento
+11 - Nova temperatura
+12 - Nova umidade
+13 - Novo vento
+14 - Nova leitura completa
+0 - Sair
+
+Opcao: 1
+Telao ativado.
+
+Opcao: 5
+Alerta de calor ativado.
+
+Opcao: 11
+Temperatura: 38
+
+Nova temperatura: 38.0C
+  [TELAO]  Temperatura: 38.0C
+  [ALERTA] Calor extremo de 38.0C!
+
+Opcao: 11
+Temperatura: 22
+
+Nova temperatura: 22.0C
+  [TELAO]  Temperatura: 22.0C
+
+Opcao: 9
+Alerta de vento ativado.
+
+Opcao: 13
+Vento (km/h): 75
+
+Novo vento: 75.0 km/h
+  [TELAO]  Vento: 75.0 km/h
+  [ALERTA] Vento forte de 75.0 km/h!
+
+Opcao: 14
+Temperatura: 30
+Umidade: 85
+Vento: 20
+
+Nova leitura -> Temperatura: 30.0C, Umidade: 85.0%, Vento: 20.0 km/h
+  [TELAO]  Temperatura: 30.0C
+  [TELAO]  Umidade: 85.0%
+  [TELAO]  Vento: 20.0 km/h
+  [ALERTA] Umidade alta de 85.0%
+
+Opcao: 0
+Encerrando...
