@@ -33,7 +33,7 @@ Pior: se o preço do Leite subir, você precisará alterar o preço em todas as 
 #Solução#
 
 O padrão Decorator sugere que você abandone a herança direta para criar combinações e passe a usar a Composição (uma abordagem onde um objeto tem um outro objeto, em vez de ser um objeto).
-Você transforma os adicionais em Envoltórios (Wrappers). Um envoltório é um objeto que possui a mesma interface do objeto original (Bebida), mas carrega uma referência secreta para ele dentro de si.
+Transformando os adicionais em Envoltórios (Wrappers). Um envoltório é um objeto que possui a mesma interface do objeto original (Bebida), mas carrega uma referência secreta para ele dentro de si.
 
 Quando o cliente pede um Café com Leite e Chocolate, o sistema faz o seguinte:
 1-Instancia o objeto base: pedido = Cafe()
