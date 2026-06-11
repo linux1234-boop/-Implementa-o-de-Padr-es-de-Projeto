@@ -41,7 +41,7 @@ Se você continuasse usando a abordagem tradicional, teria que abrir a classe Es
 O padrão Observer resolve isso introduzindo o conceito de Inversão de Dependência através de um sistema de assinatura (Publish-Subscribe).
 A classe que possui os dados importantes passa a ser chamada de Subject (Sujeito/Publicador). Ela não precisa mais saber quais ou quantos objetos querem os seus dados;
 ela apenas mantém uma lista genérica de interessados que seguem o contrato da interface Observer (Observador/Assinante).
-No código, a mágica acontece em três passos simples:
+No código isso acontece em três passos simples:
 
 *A Assinatura (anexar / desanexar): O Telao, o App e os Alertas se registram na estação quando o usuário escolhe as opções do menu no terminal. A estação apenas os adiciona à lista self.observers.
 
