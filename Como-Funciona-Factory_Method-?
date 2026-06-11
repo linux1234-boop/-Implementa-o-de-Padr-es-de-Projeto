@@ -34,3 +34,19 @@ Cada canal ganha a sua própria fábrica especializada:
                /          |          \
               /           |           \
       [EmailFactory] [SMSFactory] [PushFactory]
+
+#Saida esperada#
+=== Sistema de Notificacoes ===
+1 - E-mail
+2 - SMS
+3 - Push
+0 - Sair
+
+Opcao: 1
+Canal selecionado: E-mail
+Digite o e-mail: joao@@gmail
+E-mail invalido. Exemplo: usuario@dominio.com
+Digite o e-mail: joao@gmail.com
+Mensagem: Bem-vindo!
+[E-MAIL] Para: joao@gmail.com
+[E-MAIL] Enviando: 'Bem-vindo!' via SMTP
