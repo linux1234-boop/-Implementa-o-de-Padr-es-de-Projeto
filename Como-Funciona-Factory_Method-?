@@ -1,0 +1,36 @@
+#Factory_Method##
+O Factory Method é um padrão criacional de projeto que fornece uma interface para criar objetos em uma superclasse, mas permite que as subclasses alterem o tipo de objetos que serão criados.
+
+#Problema#
+Imagine que você está desenvolvendo o sistema central de uma grande plataforma de e-commerce. No início, a regra era simples:
+sempre que uma compra fosse aprovada, o sistema deveria avisar o cliente por E-mail.
+Você foi lá e instanciou a classe NotificacaoEmail direto na sua classe de Checkout:
+# Dentro do código de checkout do e-commerce
+if pagamento_confirmado:
+    notificacao = NotificacaoEmail(usuario.email)
+    notificacao.enviar("Sua compra foi aprovada!")
+O negócio prosperou. Meses depois, o time de marketing avisa:
+"O e-mail tem taxa de abertura baixa. Precisamos enviar SMS para atualizações urgentes."
+Mais tarde, o time do aplicativo móvel exige: "Se o usuário tiver o app, tem que ser uma Notificação Push via Firebase!"
+Se você continuar instanciando os canais diretamente, seu código de negócio começará a virar um emaranhado de condicionais:
+                   
+                  [ Código do E-commerce ]
+                             |
+         📊 (Se for Email? Se for SMS? Se for Push?)
+         /                   |                    \
+[ NotificacaoEmail ]   [ NotificacaoSMS ]   [ NotificacaoPush ]
+
+O desastre arquitetural:
+Acoplamento violento: A classe de Checkout agora precisa importar o protocolo SMTP do e-mail, as credenciais da operadora de SMS e os tokens do Firebase.
+Fragilidade: Se a assinatura do construtor da NotificacaoPush mudar amanhã para exigir um parâmetro de prioridade, você terá que caçar e alterar todas as linhas de código do sistema onde um push é criado.
+
+#Solução#
+O padrão Factory Method resolve isso dizendo: "Pare de instanciar canais de comunicação no meio da sua regra de negócio. Delegue essa criação para quem entende disso."
+Em vez de acoplar o sistema às classes concretas, você cria uma interface criadora abstrata (NotificacaoFactory) que define o método abstrato criar_notificacao().
+Cada canal ganha a sua própria fábrica especializada:
+                [ NotificacaoFactory ]
+         { + criar_notificacao(): Notificacao }
+                   { + notificar() }
+               /          |          \
+              /           |           \
+      [EmailFactory] [SMSFactory] [PushFactory]
